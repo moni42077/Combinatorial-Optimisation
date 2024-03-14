@@ -10,6 +10,13 @@ import numpy as np
 
 class Simplex:
     def __init__(self, equations, max_z) -> None:
+        """
+        A function to initialize the simplex tableau with given equations and maximum z value.
+        Parameters:
+            equations: numpy array representing the equations
+            max_z: integer, maximum z value
+        Return type: None
+        """
         self.tableau = np.vstack([equations, np.append(max_z * -1, 0)])
         # the xs which we will be interested in e.g. x1, x2
         self.xs = [f"x{i+1}" for i in range(len(max_z))]
@@ -23,6 +30,9 @@ class Simplex:
         ]
 
     def __repr__(self) -> str:
+        """
+        A method to generate a representation of the linear programming model in a human-readable form.
+        """
         output = "Maximise z =\t"
         max_z = self.tableau[-1][:-1]
         for i, x in enumerate(self.xs):
@@ -51,6 +61,18 @@ class Simplex:
         return output
 
     def solve(self, numerical=False):
+        """
+        A function that solves a linear programming problem using the simplex method.
+
+        Parameters:
+            numerical (bool): A flag indicating whether to return numerical values or a formatted string.
+
+        Returns:
+            if numerical == True:
+                tuple: A tuple containing the maximum value of z and the values for x.
+            else:
+                str: A formatted string indicating the maximum value of z and the values of x.
+        """
         while (self.tableau[-1][:-1] < 0).any():
             # pick most negative coefficient for z
             pivot_col = np.argmin(self.tableau[-1][:-1])
