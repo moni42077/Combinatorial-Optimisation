@@ -14,18 +14,17 @@ class Simplex:
         # the xs which we will be interested in e.g. x1, x2
         self.xs = [f"x{i+1}" for i in range(len(max_z))]
         # at the start x1 x2 are in the column 1 and 2 and we will keep track at where they are in the table
-        # self.column_x = {x:i for i,x in enumerate(self.xs)} Note can you a list instead similar to dic with key 0, 1, 2 etc
         self.column_x = self.xs.copy()
-        # self.row_x = {f'x{j+1}' : i for i,j in enumerate(range(len(max_z),len(max_z) + equations.shape[0]))} Same as above:
+
         # Instead of having x3: 0, x4: 1, x5: 2 we can have [x3, x4, x5]
         # tracks artificial variables as x3,x4 and x5
         self.row_x = [
             f"x{i+1}" for i in range(len(max_z), len(max_z) + equations.shape[0])
         ]
 
-    def __str__(self) -> str:
-        # z = SUM max_z  * xs
+    def __repr__(self) -> str:
         output = "Maximise z =\t"
+        max_z = self.tableau[-1][:-1]
         for i, x in enumerate(self.xs):
             if i == len(self.xs) - 1:
                 output += f"{int(max_z[i])}{x} \n"
@@ -69,7 +68,6 @@ class Simplex:
 
             pivot_element = self.tableau[pivot_row, pivot_col]
 
-            ##print(f'pivot_col={pivot_col}, pivot_row={pivot_row}, pivot_element={pivot_element}')
             # swap x in row and column
 
             self.column_x[pivot_col], self.row_x[pivot_row] = (
@@ -80,7 +78,7 @@ class Simplex:
             # Update the whole tableau with i representing rows and j - columns
             # Note without copy you will modify the original tableau and you wont be able to access the old values
             updated_tableau = self.tableau.copy()
-            ##print(f'BEFORE FOR \n Tableau is \n {self.tableau} \n and updated tableau is \n {updated_tableau} \n ')
+
             for i, row in enumerate(self.tableau):
                 for j, value in enumerate(row):
                     if i == pivot_row and j == pivot_col:
@@ -96,9 +94,7 @@ class Simplex:
                             * self.tableau[pivot_row, j]
                             / pivot_element
                         )
-                        # print(f'For element {value}, id = ({i},{j})the new value is {self.tableau[i,j]} by doing {self.tableau[i,pivot_col]} * {self.tableau[pivot_row,j]} / {pivot_element} or ({i},{pivot_col}) * ({pivot_row},{j}) / {pivot_element}')
 
-            ##print(f'AFTER FOR \n Tableau is \n {self.tableau} \n and updated tableau is \n {updated_tableau} \n ')
             self.tableau = updated_tableau
 
         # Get values for x
@@ -117,11 +113,9 @@ class Simplex:
             sol_output = {x: round(x_value, 9) for x, x_value in zip(self.xs, x_val)}
             return f"Max z = {z} and {sol_output} "
 
-            # print(f'AFTER FOR \n Tableau is\n {self.tableau} \n and updated tableau is \n {updated_tableau}')
 
-
-'''
-Some tests and examples
+"""
+#Some tests and examples
 
 equations = np.array([[2.0, 3.0, 1500.0], [3.0, 2.0, 1500.0], [1.0, 1.0, 550.0]])
 max_z = np.array([10.0, 12.0])
@@ -134,5 +128,7 @@ print(s1)
 print(s1.solve())
 
 s2 = Simplex(eq_2, max_z2)
+print(s2)
 print(s2.solve())
-'''
+
+"""
