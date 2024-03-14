@@ -120,7 +120,8 @@ class Simplex:
             # print(f'AFTER FOR \n Tableau is\n {self.tableau} \n and updated tableau is \n {updated_tableau}')
 
 
-
+'''
+Some tests and examples
 
 equations = np.array([[2.0, 3.0, 1500.0], [3.0, 2.0, 1500.0], [1.0, 1.0, 550.0]])
 max_z = np.array([10.0, 12.0])
@@ -134,3 +135,4 @@ print(s1.solve())
 
 s2 = Simplex(eq_2, max_z2)
 print(s2.solve())
+'''
