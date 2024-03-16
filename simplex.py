@@ -1,11 +1,15 @@
 import numpy as np
 
+'''
 ##Simplex problem e.g.
-# max z = 10x1 + 12x2
-# 2x1 + 3x2 <= 1500
-# 3x1 + 2x2 <= 1500
-# x1 + x2 <= 550
-# x1,x2 >= 0
+max z = 10x1 + 12x2
+2x1 + 3x2 <= 1500
+3x1 + 2x2 <= 1500
+x1 + x2 <= 550
+x1,x2 >= 0
+
+where x1 + x2 <= 550 <=> x1 + x2 + x3 = 550 where x3 is a slack variable >= 0
+'''
 
 
 class Simplex:
@@ -24,7 +28,7 @@ class Simplex:
         self.column_x = self.xs.copy()
 
         # Instead of having x3: 0, x4: 1, x5: 2 we can have [x3, x4, x5]
-        # tracks artificial variables as x3,x4 and x5
+        # tracks slack variables as x3,x4 and x5
         self.row_x = [
             f"x{i+1}" for i in range(len(max_z), len(max_z) + equations.shape[0])
         ]
